@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Shower - Lhya Esmeralda</title>
+    <!-- Fuentes de Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fce7f0;
+            overflow: hidden;
+        }
+        .font-script {
+            font-family: 'Great Vibes', cursive;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.9); }
+        }
+        .gold-glow {
+            animation: pulse-gold 2.5s infinite;
+        }
+        .gold-text {
+            color: #d4af37;
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #b8860b 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+            font-weight: bold;
+        }
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 2s infinite ease-in-out;
+        }
+        #sparkles-layer {
+            z-index: 1;
+            pointer-events: none;
+        }
+        #app-container {
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="relative w-screen h-screen flex items-center justify-center m-0 p-0">
+
+    <!-- Tu canción principal en bucle continuo -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://files.catbox.moe/3mft5g.mp3" type="audio/mp3">
+        Tu navegador no soporta audio.
+    </audio>
+
+    <!-- Tu audio de sorpresa personalizado -->
+    <audio id="surprise-sound" preload="auto">
+        <source src="https://files.catbox.moe/8x9bwy.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Fondo con brillo sutil -->
+    <div class="absolute inset-0 bg-gradient-to-b from-pink-100 via-pink-200 to-pink-300 z-0"></div>
+
+    <!-- Contenedor principal con padding inferior ajustado -->
+    <main id="app-container" class="relative w-full max-w-md h-full max-h-[820px] bg-[#fff5f8] shadow-2xl rounded-3xl overflow-hidden flex flex-col items-center justify-between p-4 pb-8 border-4 border-[#e6ca65]">
+
+        <!-- ESCENA 1: EL SOBRE Y EL OSITO -->
+        <section id="envelope-screen" class="w-full h-full flex flex-col items-center justify-center transition-all duration-1000">
+            <div class="text-center mb-4">
+                <span class="text-xs uppercase tracking-widest text-pink-600 font-bold">✨ Invitación Exclusiva ✨</span>
+                <h2 class="font-script text-4xl gold-text mt-1">Un momento mágico</h2>
+            </div>
+
+            <!-- Tarjeta del Sobre -->
+            <div class="relative w-72 h-96 bg-pink-200 rounded-2xl shadow-xl flex flex-col items-center justify-end p-6 border-2 border-[#e6ca65] overflow-hidden animate-float">
+                <!-- Osito superior -->
+                <div class="absolute -top-3 w-28 h-28 bg-amber-100 rounded-full flex items-center justify-center shadow-md border border-pink-300">
+                    <span class="text-4xl">🧸</span>
+                    <span class="absolute top-1 right-3 text-lg">🎀</span>
+                </div>
+
+                <!-- Sobre central interactivo -->
+                <div id="open-envelope-btn" class="cursor-pointer relative w-60 h-40 bg-pink-300 rounded-xl shadow-inner border-2 border-[#e6ca65] flex items-center justify-center gold-glow transition-transform hover:scale-105 active:scale-95">
+                    <div class="absolute inset-x-0 top-0 h-20 bg-pink-400 rounded-t-xl border-b-2 border-[#e6ca65]" style="clip-path: polygon(0 0, 50% 100%, 100% 0);"></div>
+                    <div class="relative z-20 w-12 h-12 bg-gradient-to-tr from-yellow-500 to-yellow-200 rounded-full flex items-center justify-center shadow-lg text-white text-xl border border-yellow-600 animate-pulse">
+                        ❤️
+                    </div>
+                </div>
+                <p class="text-xs text-pink-700 mt-5 font-semibold italic animate-bounce">Toca el corazón dorado para abrir 🎶</p>
+            </div>
+        </section>
+
+        <!-- ESCENA 2: LA INVITACIÓN EXTENDIDA -->
+        <section id="invitation-screen" class="hidden opacity-0 w-full h-full flex flex-col justify-between py-2 transition-all duration-1000 text-center relative">
+            
+            <!-- Marco decorativo superior con botón de música flotante -->
+            <div class="w-full flex justify-between items-center px-2 pt-1">
+                <span class="text-lg">🧸🩰</span>
+                <h1 class="font-script text-3xl gold-text tracking-wide font-bold">Baby Shower</h1>
+                <button onclick="toggleMusic()" id="music-btn" class="bg-white/90 border border-yellow-500 rounded-full px-2.5 py-1 text-xs shadow-sm text-pink-700 font-bold flex items-center space-x-1">
+                    <span>🎵</span> <span id="music-status">ON</span>
+                </button>
+            </div>
+
+            <!-- Contenidos secuenciales -->
+            <div class="flex-1 flex flex-col items-center justify-center px-2 my-auto w-full overflow-y-auto">
+                <div id="step-content" class="transition-all duration-700 transform translate-y-2 opacity-0 w-full">
+                    <!-- Inyectado por JavaScript -->
+                </div>
+            </div>
+
+            <!-- Navegación e indicadores con margen inferior elevado -->
+            <div class="w-full flex flex-col items-center pb-6 pt-2 bg-gradient-to-t from-[#fff5f8] via-[#fff5f8] to-transparent">
+                <div class="flex space-x-1.5 mb-2.5" id="dots-container">
+                    <div class="w-2 h-2 rounded-full bg-yellow-500 transition-all duration-300" data-dot="0"></div>
+                    <div class="w-2 h-2 rounded-full bg-pink-300 transition-all duration-300" data-dot="1"></div>
+                    <div class="w-2 h-2 rounded-full bg-pink-300 transition-all duration-300" data-dot="2"></div>
+                    <div class="w-2 h-2 rounded-full bg-pink-300 transition-all duration-300" data-dot="3"></div>
+                    <div class="w-2 h-2 rounded-full bg-pink-300 transition-all duration-300" data-dot="4"></div>
+                </div>
+                <button id="next-btn" class="bg-gradient-to-r from-yellow-500 to-amber-400 text-white font-bold px-7 py-2.5 rounded-full shadow-lg text-sm hover:opacity-95 transition-all active:scale-95">
+                    Siguiente ✨
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Partículas mágicas situadas estrictamente al fondo -->
+    <div id="sparkles-layer" class="absolute inset-0 overflow-hidden hidden"></div>
+
+    <script>
+        const steps = [
+            {
+                content: `
+                    <div class="space-y-2 px-1">
+                        <div class="flex justify-center space-x-2 text-xl mb-1">🧸 🌸 🧸</div>
+                        <p class="text-pink-950 text-xs font-medium leading-relaxed">
+                            “Hay latidos que nos llenan el alma de una alegría infinita y nos enseñan lo que es amar antes de conocer. La dulce espera de nuestra amada princesa está llegando a su capítulo más hermoso.”
+                        </p>
+                        <p class="text-pink-800 text-[11px] italic font-semibold pt-1">
+                            Queremos compartir este momento único con las personas que hacen nuestra vida más especial. ¡Tu presencia llenará de bendiciones su llegada!
+                        </p>
+                    </div>
+                `
+            },
+            {
+                content: `
+                    <div class="space-y-2 px-1">
+                        <div class="text-2xl">🎀🩰✨</div>
+                        <span class="text-[10px] uppercase tracking-widest text-amber-700 font-extrabold block">Con todo el amor del mundo</span>
+                        <h3 class="font-script text-2xl gold-text font-bold">Los futuros papás orgullosos:</h3>
+                        <p class="text-pink-950 font-bold text-base">Alejandra y Jhonny</p>
+                        <div class="pt-1">
+                            <span class="text-[10px] uppercase tracking-widest text-pink-600 font-extrabold block">Nos regalan la bendición de recibir a nuestra</span>
+                            <h2 class="font-script text-3xl text-pink-900 font-extrabold mt-1">Lhya Esmeralda</h2>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                content: `
+                    <div class="bg-white/95 backdrop-blur-sm p-3 rounded-2xl border-2 border-yellow-400 shadow-md w-full space-y-1.5 text-left">
+                        <div class="text-center font-script text-xl gold-text font-bold mb-1">Detalles del Gran Día</div>
+                        <div class="flex items-center space-x-2 text-pink-950 text-[11px] font-semibold bg-pink-50 p-2 rounded-xl">
+                            <span class="text-sm">📅</span> <div><strong>Fecha:</strong> Jueves 05 de Noviembre de 2026</div>
+                        </div>
+                        <div class="flex items-center space-x-2 text-pink-950 text-[11px] font-semibold bg-pink-50 p-2 rounded-xl">
+                            <span class="text-sm">⏰</span> <div><strong>Hora:</strong> 3:00 PM (¡Te esperamos puntual!)</div>
+                        </div>
+                        <div class="flex items-center space-x-2 text-pink-950 text-[11px] font-semibold bg-pink-50 p-2 rounded-xl">
+                            <span class="text-sm">⛪</span> <div><strong>Lugar:</strong> Parroquia de Coche</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                content: `
+                    <div class="space-y-2 px-1">
+                        <div class="flex justify-center space-x-2 text-xl">🧸 🎁 🧸</div>
+                        <h3 class="font-script text-2xl gold-text font-bold">Lluvia de Sobres / Regalos</h3>
+                        <p class="text-pink-950 text-[11px] leading-relaxed font-medium">
+                            Tu cariño es nuestro mejor obsequio. Si deseas tener un detalle adicional con nuestra pequeña Lhya Esmeralda en pañales o detalles, habrá una hermosa cajita esperándote con mucho amor.
+                        </p>
+                        <p class="text-pink-800 text-[10px] font-bold italic">
+                            "Cada detalle tuyo se convertirá en un recuerdo inolvidable en su corazoncito."
+                        </p>
+                    </div>
+                `
+            },
+            {
+                content: `
+                    <div class="space-y-2 px-1 relative">
+                        <div class="text-3xl animate-bounce-slow">🧸💖✨</div>
+                        <h3 class="font-script text-2xl gold-text font-bold">¡Sorpresa Mágica de Ositos!</h3>
+                        <p class="text-pink-950 text-[11px] font-medium">
+                            ¡Has descubierto nuestra sección secreta! Toca el botón para activar una hermosa sorpresa musical.
+                        </p>
+                        <button onclick="triggerBigSurprise()" class="bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 text-white font-bold px-4 py-2 rounded-full shadow-lg text-xs hover:scale-105 transition-all animate-pulse">
+                            🎉 ¡Activar Magia de Ositos! 🧸
+                        </button>
+                        <div id="surprise-box" class="hidden text-pink-950 text-[11px] font-bold bg-yellow-100 p-2.5 rounded-xl border-2 border-yellow-400 mt-1 shadow-md">
+                            ✨ ¡Ella pronto llegará para iluminar nuestras vidas con su hermosa sonrisa! ¡Nos vemos este 05 de Noviembre en la Parroquia de Coche con Alejandra y Jhonny!
+                        </div>
+                        <button id="restart-btn" class="text-[10px] text-amber-700 underline cursor-pointer block mx-auto pt-1 font-bold">🔄 Volver a ver la invitación</button>
+                    </div>
+                `
+            }
+        ];
+
+        let currentStepIndex = 0;
+        let isMusicPlaying = false;
+
+        function openInvitation() {
+            const envelopeScreen = document.getElementById('envelope-screen');
+            const invitationScreen = document.getElementById('invitation-screen');
+            const sparkles = document.getElementById('sparkles-layer');
+            const music = document.getElementById('bg-music');
+
+            music.currentTime = 0;
+            music.volume = 0.9;
+            music.play().then(() => {
+                isMusicPlaying = true;
+                document.getElementById('music-status').textContent = "ON";
+            }).catch(error => {
+                console.log("Audio play prevented:", error);
+            });
+
+            sparkles.classList.remove('hidden');
+            createBackgroundSparkles();
+
+            envelopeScreen.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                envelopeScreen.classList.add('hidden');
+                invitationScreen.classList.remove('hidden');
+                setTimeout(() => {
+                    invitationScreen.classList.remove('opacity-0');
+                    renderStep();
+                }, 50);
+            }, 500);
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            const surpriseSound = document.getElementById('surprise-sound');
+            const status = document.getElementById('music-status');
+            
+            if (isMusicPlaying) {
+                music.pause();
+                surpriseSound.pause();
+                isMusicPlaying = false;
+                status.textContent = "OFF";
+            } else {
+                music.play();
+                isMusicPlaying = true;
+                status.textContent = "ON";
+            }
+        }
+
+        function renderStep() {
+            const container = document.getElementById('step-content');
+            container.classList.add('opacity-0', 'translate-y-2');
+            
+            setTimeout(() => {
+                container.innerHTML = steps[currentStepIndex].content;
+                container.classList.remove('opacity-0', 'translate-y-2');
+
+                const restartBtn = document.getElementById('restart-btn');
+                if (restartBtn) {
+                    restartBtn.addEventListener('click', restartInvitation);
+                }
+            }, 300);
+
+            const dots = document.querySelectorAll('[data-dot]');
+            dots.forEach((dot, idx) => {
+                if (idx === currentStepIndex) {
+                    dot.classList.remove('bg-pink-300');
+                    dot.classList.add('bg-yellow-500', 'w-5');
+                } else {
+                    dot.classList.remove('bg-yellow-500', 'w-5');
+                    dot.classList.add('bg-pink-300', 'w-2');
+                }
+            });
+
+            const btn = document.getElementById('next-btn');
+            if (currentStepIndex === steps.length - 1) {
+                btn.textContent = "✨ ¡Te esperamos!";
+            } else {
+                btn.textContent = "Siguiente ✨";
+            }
+        }
+
+        function nextStep() {
+            currentStepIndex++;
+            if (currentStepIndex >= steps.length) {
+                currentStepIndex = 0;
+            }
+            renderStep();
+        }
+
+        function triggerBigSurprise() {
+            const box = document.getElementById('surprise-box');
+            box.classList.remove('hidden');
+            createBackgroundSparkles();
+
+            const bgMusic = document.getElementById('bg-music');
+            const surpriseSound = document.getElementById('surprise-sound');
+
+            if (isMusicPlaying) {
+                bgMusic.pause();
+            }
+
+            surpriseSound.currentTime = 0;
+            surpriseSound.play().then(() => {
+                surpriseSound.onended = function() {
+                    if (isMusicPlaying) {
+                        bgMusic.play();
+                    }
+                };
+            }).catch(e => {
+                if (isMusicPlaying) {
+                    bgMusic.play();
+                }
+            });
+        }
+
+        function restartInvitation() {
+            currentStepIndex = 0;
+            const envelopeScreen = document.getElementById('envelope-screen');
+            const invitationScreen = document.getElementById('invitation-screen');
+            const sparkles = document.getElementById('sparkles-layer');
+            const music = document.getElementById('bg-music');
+            const surpriseSound = document.getElementById('surprise-sound');
+
+            music.pause();
+            music.currentTime = 0;
+            surpriseSound.pause();
+            surpriseSound.currentTime = 0;
+            isMusicPlaying = false;
+
+            invitationScreen.classList.add('opacity-0');
+            setTimeout(() => {
+                invitationScreen.classList.add('hidden');
+                sparkles.classList.add('hidden');
+                envelopeScreen.classList.remove('hidden');
+                setTimeout(() => {
+                    envelopeScreen.classList.remove('opacity-0', 'scale-95');
+                }, 50);
+            }, 500);
+        }
+
+        function createBackgroundSparkles() {
+            const layer = document.getElementById('sparkles-layer');
+            layer.innerHTML = '';
+            for (let i = 0; i < 14; i++) {
+                const sparkle = document.createElement('div');
+                const symbols = ['🧸', '✨', '💖', '🎀', '🌸'];
+                sparkle.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+                sparkle.className = 'absolute text-sm opacity-60 animate-pulse';
+                
+                const isSide = Math.random() > 0.5;
+                if (isSide) {
+                    sparkle.style.left = Math.random() > 0.5 ? '5%' : '88%';
+                    sparkle.style.top = (Math.random() * 80 + 10) + '%';
+                } else {
+                    sparkle.style.left = (Math.random() * 80 + 10) + '%';
+                    sparkle.style.top = Math.random() > 0.5 ? '4%' : '92%';
+                }
+                
+                sparkle.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                layer.appendChild(sparkle);
+            }
+        }
+
+        document.getElementById('open-envelope-btn').addEventListener('click', openInvitation);
+        document.getElementById('next-btn').addEventListener('click', nextStep);
+    </script>
+</body>
+</html>
